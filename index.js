@@ -19,14 +19,12 @@
 // Make sure there is a way to delete numbers. If we wanted to delete A5, we can type in A5 as the expression.
 
 // Finally, about the test cases. I tested as I went to make sure my functions were doing what I intended them to do, but I wasn't
-// able to figure out how node.js worked. This is my first time touching Javascript, so any feedback is much appreciated. 
+// able to figure out how node.js worked to write unit tests. 
 
 // This was super fun. There's nothing quite like banging your head against code and seeing the page load the way you intended it to. 
 // I never thought I'd be so excited to see a for loop of numbers show up on the screen. 
 
 // Things left to do: 
-// - parse the inputs for SUM/AVG
-// - take into account the strings
 // - check when things are NULL
 // - clean up redundant code
 
