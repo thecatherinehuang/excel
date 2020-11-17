@@ -74,7 +74,7 @@ function parseIndices(expression){
     if (expression.includes(':')){
         let parts = expression.split(':');
         if (parts.length !== 2){
-            alert('Invalid input. For a range of values, the inner expression should be \'cell:cell\'');
+            alert('Invalid input. For a range of values, the inner expression should be \'letter:number\'');
             return false;
         }
         else {
@@ -125,11 +125,11 @@ function parseIndices(expression){
         let parts = expression.split(',');
         let arr = []
         for (let part of parts){
-            if (Number.isNaN(Number(part))){ // if it isn't a number 
+            if (!isNumber(part)){ // if it isn't a number 
                 if (parseIndex(part)){ // returns false if input has bugs, will alert
-                    [i,j] = parseIndex(part);
-                    if (!Number.isNaN(Number(queryTableArr(i, j)))){ // check if the queried value is a number
-                        arr.push(Number(queryTableArr(i,j)));
+                    let [i,j] = parseIndex(part);
+                    if (isNumber(queryTableArr(i, j))){ // check if the queried value is a number
+                        arr.push(queryTableArr(i,j));
                     } else {
                         alert('Table array contains a string or is empty') 
                         return false;
@@ -143,16 +143,16 @@ function parseIndices(expression){
     }
 }
 
+function queryTableArr(row, col){
+    tableArr = JSON.parse(localStorage.getItem("spreadsheet"));
+    return Number(tableArr[row][col]);
+}
+
 function basicMathTwoCells(expression, operation){
     let [one, two] = expression.split(operation);
     let [row1, col1] = parseIndex(one);
     let [row2, col2] = parseIndex(two);
     return [queryTableArr(row1, col1), queryTableArr(row2, col2)]
-}
-
-function queryTableArr(row, col){
-    tableArr = JSON.parse(localStorage.getItem("spreadsheet"));
-    return Number(tableArr[row][col]);
 }
 
 function setTableArr(row, col, val){
@@ -161,16 +161,16 @@ function setTableArr(row, col, val){
     localStorage.setItem("spreadsheet", JSON.stringify(tableArr));
 }
 
-function isNumber(expression){
-    if (expression){
-        return true;
-    } else {
-        return false;
-    }
+function isNumber(expression){ // pass in string
+    return !Number.isNaN(Number(expression));
 }
 
 function editContents(form){
     let cellIndex = form.cellindex.value.toUpperCase(); // make it more user friendly. case insensitive
+    if (!parseIndex(cellIndex)){
+        alert('Expression is in wrong format');
+        return false;
+    }
     let [i, j] = parseIndex(cellIndex);
     let expression = form.expression.value;
     // let expression = prompt('Enter an expression for' + cellIndex);
@@ -179,6 +179,7 @@ function editContents(form){
     // expression
     if (!expression){
         alert('Enter an expression');
+        return false;
     }
     console.log(expression[0] === '=');
     if (expression[0] === '='){
@@ -222,7 +223,7 @@ function editContents(form){
         else if (expression.includes('/')){
             let [a, b]= basicMathTwoCells(newExpression, '/');
             if (isNumber(a) & isNumber(b)) {
-                if (b === 0){
+                if (Number(b) === 0){
                     alert('Can\'t divide by 0');
                     return false;
                 }
@@ -239,15 +240,16 @@ function editContents(form){
                 console.log(newExpression.slice(4, newExpression.length-1));
                 if (parseIndices(newExpression.slice(4, newExpression.length-1))){
                     let toSumArr = parseIndices(newExpression.slice(4, newExpression.length-1));
-                    setTableArr(i, j, toSumArr.reduce(function(a, b){return a+b;}));
-                    console.log(toSumArr);
-                    console.log(toSumArr.reduce(function(a, b){return a+b;}));
+                    let numVal = toSumArr.reduce(function(a, b){return a+b;});
+                    setTableArr(i, j, numVal.toString());
                 }
                 break;
             case 'AVG':
-                if (parseIndices(newExpression.slice(4, expression.length-1))){
-                    let toSumArr = parseIndices(newExpression.slice(4, expression.length-1));
-                    setTableArr(i, j, toSumArr.reduce(function(a, b){return a+b;}) / toSumArr.length);
+                if (parseIndices(newExpression.slice(4, newExpression.length-1))){
+                    let toSumArr = parseIndices(newExpression.slice(4, newExpression.length-1));
+                    let len = toSumArr.length;
+                    let numVal = toSumArr.reduce(function(a, b){return a+b;}) / len;
+                    setTableArr(i, j, numVal.toString());
                 }
                 break;
         }
