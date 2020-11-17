@@ -1,0 +1,47 @@
+Possible errors: 
+-When evaluating a function and you enter an infinite loop, error. 
+    eg, when A1 = SUM(A2, A3) and A2 = SUM(A1, A3) or A1 = SUM(A1, A2)
+
+Basic math operations between two cells:
+
+To index the web-based spreadsheet, we can think of it as a matrix. 
+    - 
+
+If a math function finds a string, the program shouldn't crash:
+    - If a range of values has some strings in it, we should ignore the strings and do operations solely on entries that are numbers
+    - Functionality: What should AVG(5, 's', 4) give? should it be 4.5 or 3?
+    - AVG('s') = 0, possible edge case
+
+Parsing user input:
+    - things starting with an '='
+    - do evaluate on each cell
+    - if no
+
+When user wants to overwrite a cell, pop up a dialog making sure user intended that action
+
+Time permitting: make the table have two headings
+Structure would look like 
+<table>
+    <tr> 
+        <td></td>
+        <th scope = "col"> 1 </th>
+        ...
+        <th scope = "col"> 50 </th>
+    </tr>
+
+    <tr>
+        <th scope = "row> A </th>
+        <td> stuff </td>
+        ...
+        <td> stuff </td>
+    </tr>
+
+    ...
+
+    <tr>
+        <th scope = "row> Z </th>
+        <td> stuff </td>
+        ...
+        <td> stuff </td>
+    </tr>
+</table>

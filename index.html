@@ -1,0 +1,26 @@
+<!--Sources I used https://www.digitalocean.com/community/tutorials/how-to-make-changes-to-the-dom -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Spreadsheet</title>
+  </head>
+  <body>
+    <script src="index.js"></script>
+  </body>
+
+  <body>
+    <form>
+        <label for="cellindex">Cell index:</label> 
+        <input type="text" id="cellindex" name="cellindex" placeholder="A5, {A-Z 1-50}"><br>
+
+        <label for="input">Input:</label>
+        <input type="text" id="expression" name="expression" placeholder="=SUM(A1:A5), 5"><br>
+    
+        <input type="submit" value="Submit" onclick="editContents(this.form); createTable()" >
+        <input type="reset" value="Reset" onclick="initializeTable(); createTable()">
+    </form>
+  </body>
+</html>
+
